@@ -9,11 +9,30 @@ $post_types = array(
 	'post',
 	'page'
 );
-$home_url = 'http://localhost/wordpress1';
-$url      = slug_api_posts_url_string( $post_types, $filters, $home_url );
+$url      = slug_api_posts_url_string( $post_types, $filters );
+$data     = slug_get_json( $url );
 
-$data = slug_get_json( $url );
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>WP API Demo</title>
+</head>
+<body>
 
-foreach ($data as $key => $post) {
-	echo $post->title . '<br />';
-}
+<?php if ( is_array( $data ) && count( $data ) > 0 ) : ?>
+	<?php foreach ( $data as $key => $post ) : ?>
+		<article id="post-<?php echo esc_attr( $post->ID ); ?>">
+			<header>
+				<h1><?php echo esc_html( $post->title ); ?></h1>
+			</header>
+			<div class="entry-content">
+				<?php echo wpautop( $post->content ); ?>
+			</div>
+		</article>
+	<?php endforeach; ?>
+<?php endif; ?>
+
+</body>
+</html>
