@@ -1,11 +1,17 @@
 <?php
 
-$args = array(
-	'filter[posts_per_page]' => 20,
-	'filter[orderby]'        => 'title',
-	'filter[order]'          => 'ASC'
+$filters = array(
+	'posts_per_page' => 20,
+	'orderby'        => 'modified_gmt',
+	'offset'         => 10
 );
-$url  = add_query_arg( $args, 'http://localhost/wordpress1/wp-json/posts' );
+$post_types = array(
+	'post',
+	'page'
+);
+$home_url = 'http://localhost/wordpress1';
+$url      = slug_api_posts_url_string( $post_types, $filters, $home_url );
+
 $data = slug_get_json( $url );
 
 foreach ($data as $key => $post) {
